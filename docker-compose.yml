@@ -1,0 +1,11 @@
+version: '3'
+services:
+  web:
+    build: ./
+    # volumes:
+    #  - "./:/app" # ホストの./をdocker内に/appへマウント
+    ports:
+      - "3000:3000"
+    restart: always # コンテナ停止時の挙動. always: 明示的に stop がされない限り、終了ステータスに関係なく常に再起動が行われる
+    container_name: "nuxt2-docker"
+    tty: true # 永続化
