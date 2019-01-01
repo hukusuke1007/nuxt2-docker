@@ -1,1 +1,1 @@
-# nuxt2-docker
+# nuxt2-docker-web

@@ -1,28 +1,39 @@
 version: '3'
 services:
   # リバースプロキシ
-  #proxy:
-  #  image: jwilder/nginx-proxy
-  #  container_name: nuxt2-docker-jwilder-nginx-proxy
-  #  ports:
-  #    - "80:80"
-  #  volumes:
-  #    - /var/run/docker.sock:/tmp/docker.sock:ro
-      # - ./nginx.conf /etc/nginx/conf.d/nginx.conf
-  #  network_mode: "bridge"
-  #  restart: always
   proxy:
-    build: ./proxy
-    container_name: "nuxt2-docker-nginx-proxy"
+    container_name: "nuxt2-docker-jwilder-nginx-proxy"
+    image: jwilder/nginx-proxy
     ports:
-        - 80:80
+      - "80:80"
+      - "443:443"
+    volumes:
+      # コンテナの起動・停止イベントを受け取る必要がある為設定
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      #- ./certs:/etc/nginx/certs
+      #- ./nginx.conf /etc/nginx/conf.d/nginx.conf
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    restart: always
+    
+    #network_mode: "bridge"
+  #proxy:
+  #  container_name: "nuxt2-docker-nginx-proxy"
+  #  build: ./proxy
+  #  ports:
+  #      - 80:80
   # Nuxt.js
   web:
+    container_name: "nuxt2-docker"
     build: ./web
     # volumes:
     #  - "./:/app" # ホストの./をdocker内に/appへマウント
     ports:
       - "3000:3000"
+    environment:
+      - VIRTUAL_HOST=web.virtualhost.com
+     #  - CERT_NAME=default # 使用する証明書名(default.crt, default.keyが使用される。)
     restart: always # コンテナ停止時の挙動. always: 明示的に stop がされない限り、終了ステータスに関係なく常に再起動が行われる
-    container_name: "nuxt2-docker"
     tty: true # 永続化
