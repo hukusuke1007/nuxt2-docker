@@ -1,6 +1,6 @@
 # build用
-FROM node:10.11.0-alpine
-#FROM node:10.11.0-alpine as builder
+#FROM node:10.11.0-alpine
+FROM node:10.11.0-alpine as builder
 LABEL shohei <xxxx@xxxx.xx>
 
 WORKDIR /app
@@ -17,7 +17,7 @@ ADD . ./
 RUN yarn build
 
 # 実行用
-#FROM node:10.11.0-alpine
+FROM node:10.11.0-alpine
 
 WORKDIR /app
 ENV HOST=0.0.0.0
@@ -25,10 +25,10 @@ ENV HOST=0.0.0.0
 ADD package.json ./
 ADD nuxt.config.js ./
 
-#COPY --from=builder ./app/server ./server/
-#COPY --from=builder ./app/node_modules ./node_modules/
-#COPY --from=builder ./app/.nuxt ./.nuxt/
-#COPY --from=builder ./app/static ./static/
+COPY --from=builder ./app/server ./server/
+COPY --from=builder ./app/node_modules ./node_modules/
+COPY --from=builder ./app/.nuxt ./.nuxt/
+COPY --from=builder ./app/static ./static/
 
 EXPOSE 3000
 
