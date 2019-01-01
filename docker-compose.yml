@@ -1,37 +1,56 @@
 version: '3'
 services:
   # リバースプロキシ
-  proxy:
+  nginx-proxy:
     container_name: "nuxt2-docker-jwilder-nginx-proxy"
     image: jwilder/nginx-proxy
+    #privileged: true
     ports:
       - "80:80"
-      - "443:443"
+      #- "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro # コンテナの起動・停止イベントを受け取る必要がある為設定
-      - ./certs:/etc/nginx/certs	               # SSL
+      #- ./docker-compose.d/certs:/etc/nginx/certs:ro
+      #- ./docker-compose.d/htpasswd:/etc/nginx/htpasswd
+      #- /etc/nginx/vhost.d
+      #- /usr/share/nginx/html
+      # - ./certs:/etc/nginx/certs:ro # SSL
     logging:
       options:
         max-size: "10m"
         max-file: "3"
     restart: always
-    
-    #network_mode: "bridge"
-  #proxy:
+  #nginx-proxy::
   #  container_name: "nuxt2-docker-nginx-proxy"
   #  build: ./proxy
   #  ports:
   #      - 80:80
+  # SSL
+  #letsencrypt-nginx:
+  #  image: jrcs/letsencrypt-nginx-proxy-companion
+  #  container_name: letsencrypt-nginx
+  #  privileged: true
+  #  volumes:
+  #    - ./docker-compose.d/certs:/etc/nginx/certs:rw
+  #    - /var/run/docker.sock:/var/run/docker.sock:ro
+  #  volumes_from:
+  #    - nginx-proxy
+  #  restart: always
   # Nuxt.js
   web:
     container_name: "nuxt2-docker"
     build: ./web
     # volumes:
-    #  - "./:/app" # ホストの./をdocker内に/appへマウント
+    #  - "./web:/app" # ホストの./をdocker内に/appへマウント
     ports:
       - "3000:3000"
     environment:
       - VIRTUAL_HOST=web.localhost
-     - CERT_NAME=default # 使用する証明書名(default.crt, default.keyが使用される。)
+      #- VIRTUAL_PORT=80
+      #- LETSENCRYPT_HOST=web.localhost
+      #- LETSENCRYPT_EMAIL=hogehoge@localhost.co.jp
+      # - CERT_NAME=default # 使用する証明書名(default.crt, default.keyが使用される)
+      # - HTTPS_METHOD=noredirect # リダイレクトを無効にする
     restart: always # コンテナ停止時の挙動. always: 明示的に stop がされない限り、終了ステータスに関係なく常に再起動が行われる
     tty: true # 永続化
+
