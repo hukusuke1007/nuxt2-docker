@@ -45,7 +45,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - VIRTUAL_HOST=web.localhost
+      - VIRTUAL_HOST=35.243.116.105
       #- VIRTUAL_PORT=80
       #- LETSENCRYPT_HOST=web.localhost
       #- LETSENCRYPT_EMAIL=hogehoge@localhost.co.jp
