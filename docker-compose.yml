@@ -8,10 +8,8 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      # コンテナの起動・停止イベントを受け取る必要がある為設定
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      #- ./certs:/etc/nginx/certs
-      #- ./nginx.conf /etc/nginx/conf.d/nginx.conf
+      - /var/run/docker.sock:/tmp/docker.sock:ro # コンテナの起動・停止イベントを受け取る必要がある為設定
+      - ./certs:/etc/nginx/certs	               # SSL
     logging:
       options:
         max-size: "10m"
@@ -33,7 +31,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - VIRTUAL_HOST=web.virtualhost.com
-     #  - CERT_NAME=default # 使用する証明書名(default.crt, default.keyが使用される。)
+      - VIRTUAL_HOST=web.localhost
+     - CERT_NAME=default # 使用する証明書名(default.crt, default.keyが使用される。)
     restart: always # コンテナ停止時の挙動. always: 明示的に stop がされない限り、終了ステータスに関係なく常に再起動が行われる
     tty: true # 永続化
