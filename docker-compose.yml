@@ -1,5 +1,17 @@
 version: '3'
 services:
+  # nginx-proxy
+  #proxy:
+  #  image: jwilder/nginx-proxy
+  #  container_name: nginx-proxy
+  #  ports:
+  #    - "80:80"
+  #  volumes:
+  #    - /var/run/docker.sock:/tmp/docker.sock:ro
+      # - ./nginx.conf /etc/nginx/conf.d/nginx.conf
+  #  network_mode: "bridge"
+  #  restart: always
+  # Nuxt.js
   web:
     build: ./
     # volumes:

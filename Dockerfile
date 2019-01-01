@@ -1,3 +1,14 @@
+# nginx
+# FROM ubuntu:14.04
+# LABEL shohei <>
+
+# RUN apt-get update && \
+#    apt-get install -y -q nginx && \
+#    rm -Rf /etc/nginx/sites-enabled/default && \
+#    rm -rf /var/lib/apt/lists/*
+# VOLUME ["/etc/nginx","/var/log/nginx"]
+# ADD nginx.conf /etc/nginx/conf.d/nginx.conf
+
 # build用
 FROM node:10.11.0-alpine as builder
 
@@ -30,5 +41,9 @@ COPY --from=builder ./app/node_modules ./node_modules/
 COPY --from=builder ./app/.nuxt ./.nuxt/
 COPY --from=builder ./app/static ./static/
 
+
 EXPOSE 3000
+# EXPOSE 80
+
 CMD ["yarn", "start"]
+# CMD /bin/sh -c "nginx && yarn start"
