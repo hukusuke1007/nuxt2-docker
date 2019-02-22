@@ -45,8 +45,8 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - VIRTUAL_HOST=35.243.116.105
-      #- VIRTUAL_PORT=80
+      - VIRTUAL_HOST=localhost # nuxt
+      #- VIRTUAL_PORT=3000
       #- LETSENCRYPT_HOST=web.localhost
       #- LETSENCRYPT_EMAIL=hogehoge@localhost.co.jp
       # - CERT_NAME=default # 使用する証明書名(default.crt, default.keyが使用される)
